@@ -1,11 +1,26 @@
 import React from 'react';
 import './Header.css';
 
-export default function Header({ activeTab, onSelectTab, progressPercent = 0 }) {
+/**
+ * Komponen Header Aplikasi ReactionLab 11
+ * Menampilkan identitas platform, navigasi cepat ke bagian lembar praktikum,
+ * serta status akses terbuka (100% gratis & tanpa login).
+ */
+export default function Header({ onNavigateToSection }) {
+  const handleNavClick = (sectionId) => {
+    if (onNavigateToSection) {
+      onNavigateToSection(sectionId);
+    } else {
+      const el = document.getElementById(sectionId);
+      el?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <header className="app-header">
       <div className="header-inner">
-        <a href="#home" className="header-brand" onClick={() => onSelectTab('journey')}>
+        {/* Brand / Logo Platform */}
+        <div className="header-brand" onClick={() => handleNavClick('hero-section')}>
           <div className="brand-icon-box" aria-hidden="true">
             ⚗️
           </div>
@@ -13,46 +28,40 @@ export default function Header({ activeTab, onSelectTab, progressPercent = 0 }) 
             <span className="brand-title">
               ReactionLab <span className="brand-badge">11</span>
             </span>
-            <span className="brand-subtitle">Kursus & Lab Virtual Laju Reaksi</span>
+            <span className="brand-subtitle">Lembar Belajar Laju Reaksi Kimia SMA</span>
           </div>
-        </a>
+        </div>
 
-        <nav className="header-nav" aria-label="Navigasi Utama">
+        {/* Navigasi Cepat Halaman */}
+        <nav className="header-nav" aria-label="Navigasi Lembar Praktikum">
           <button
-            className={`nav-link-btn ${activeTab === 'journey' ? 'active' : ''}`}
-            onClick={() => onSelectTab('journey')}
+            type="button"
+            className="nav-link-btn"
+            onClick={() => handleNavClick('modul-utama')}
           >
-            🗺️ Peta Belajar
+            🧪 Modul 1
           </button>
           <button
-            className={`nav-link-btn ${activeTab === 'collision' ? 'active' : ''}`}
-            onClick={() => onSelectTab('collision')}
+            type="button"
+            className="nav-link-btn"
+            onClick={() => handleNavClick('ruang-rumus')}
           >
-            💥 Simulasi Tumbukan
+            📐 Ruang Rumus & Mol
           </button>
           <button
-            className={`nav-link-btn ${activeTab === 'virtual-lab' ? 'active' : ''}`}
-            onClick={() => onSelectTab('virtual-lab')}
+            type="button"
+            className="nav-link-btn"
+            onClick={() => handleNavClick('peta-kurikulum')}
           >
-            🧪 Lab Faktor Reaksi
-          </button>
-          <button
-            className={`nav-link-btn ${activeTab === 'energy' ? 'active' : ''}`}
-            onClick={() => onSelectTab('energy')}
-          >
-            📈 Diagram Energi
+            🗺️ Rencana Bab
           </button>
         </nav>
 
+        {/* Status Akses Terbuka: Bebas, Tanpa Login, Tanpa Berbayar */}
         <div className="header-meta">
-          <div className="progress-pill" title="Progres Kursus Anda">
-            <span>Progres: {progressPercent}%</span>
-            <div className="progress-pill-bar">
-              <div
-                className="progress-pill-fill"
-                style={{ width: `${progressPercent}%` }}
-              ></div>
-            </div>
+          <div className="open-access-pill" title="Akses Terbuka untuk Siswa & Guru">
+            <span className="pill-dot">●</span>
+            <span className="pill-text">Akses Terbuka &amp; Gratis</span>
           </div>
         </div>
       </div>
