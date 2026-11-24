@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/layout/Header';
+import Sidebar from './components/layout/Sidebar';
 import ModuleCard from './components/common/ModuleCard';
 import ModuleOneDetail from './features/chapter1-rate-basics/ModuleOneDetail';
 import ModuleTwoDetail from './features/chapter2-collision-theory/ModuleTwoDetail';
@@ -31,6 +32,9 @@ import './App.css';
  */
 export default function App() {
   const [activeView, setActiveView] = useState('home'); // 'home' | 'module-1' | 'module-2' | 'module-3' | 'module-4' | 'module-5' | 'quiz'
+
+  // State sidebar terbuka / tertutup pada perangkat mobile
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // State pengguna aktif dari LocalStorage (jika ada)
   const [currentUser, setCurrentUser] = useState(() =>
@@ -163,21 +167,35 @@ export default function App() {
   }
 
   // ============================================================
-  // APLIKASI UTAMA LEMBAR SISWA (DENGAN HEADER & SELURUH MATERI)
+  // APLIKASI UTAMA LEMBAR SISWA (DENGAN SIDEBAR & HEADER ATAS)
   // ============================================================
   return (
-    <div className="app-container">
-      {/* Header Aplikasi dengan Navigasi Halaman dan Status Akun */}
-      <Header
+    <div className="app-layout">
+      {/* Sidebar Navigasi Samping */}
+      <Sidebar
         activeView={activeView}
         onSelectView={handleSelectView}
         currentUser={currentUser}
         isGuest={isGuest}
         onOpenAuth={handleOpenAuth}
         onLogout={handleLogout}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
 
-      <main className="main-content">
+      {/* Area Konten Utama dan Header Atas */}
+      <div className="app-main-wrapper">
+        <Header
+          activeView={activeView}
+          onSelectView={handleSelectView}
+          currentUser={currentUser}
+          isGuest={isGuest}
+          onOpenAuth={handleOpenAuth}
+          onLogout={handleLogout}
+          onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
+        />
+
+        <main className="main-content">
         {/* ============================================================ */}
         {/* TAMPILAN 1: HALAMAN KUIS INTERAKTIF (10 SOAL)                */}
         {/* ============================================================ */}
@@ -558,6 +576,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      </div>
     </div>
   );
 }

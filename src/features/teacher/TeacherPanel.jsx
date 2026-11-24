@@ -119,41 +119,53 @@ export default function TeacherPanel({ onBackToStudentView, currentUser = null }
       {/* 1. HEADER KHUSUS PANEL GURU (TERISOLASI DARI MENU SISWA)     */}
       {/* ============================================================ */}
       <header className="teacher-portal-header">
-        <div className="teacher-header-left">
-          <div className="teacher-badge-icon" aria-hidden="true">
-            👨‍🏫
-          </div>
-          <div className="teacher-title-wrap">
-            <div className="portal-tag-row">
-              <span className="teacher-role-badge">Panel Pendidik &amp; Guru Kimia</span>
-              <span className="teacher-curriculum-badge">Kurikulum Merdeka • Fase F</span>
-            </div>
-            <h1 className="teacher-main-title">
-              ReactionLab 11: Pemantauan Kelas &amp; Hasil Belajar Siswa
-            </h1>
-            <p className="teacher-header-sub">
-              Pantau kemajuan membaca 5 bab modul kinetika kimia, waktu login aktif, dan rekapitulasi nilai kuis interaktif 10 soal secara terarah.
-            </p>
-          </div>
-        </div>
-
-        <div className="teacher-header-actions">
-          <button
-            type="button"
-            className="btn btn-secondary btn-export-csv"
-            onClick={handleExportCSV}
-            title="Unduh data tabel dalam format CSV (kompatibel Excel & Google Sheets)"
-          >
-            📥 Ekspor Rekap (CSV/Excel)
-          </button>
+        {/* Baris Atas Header: Tombol Kembali di Pojok Kiri & Tag Portal */}
+        <div className="teacher-header-top-row">
           <button
             type="button"
             className="btn btn-primary btn-return-student"
             onClick={onBackToStudentView}
             title="Keluar dari Panel Guru dan kembali ke lembar praktikum siswa"
           >
-            ← Kembali ke Lembar Siswa
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Kembali ke Lembar Siswa</span>
           </button>
+
+          <div className="portal-tag-row">
+            <span className="teacher-role-badge">Panel Pendidik &amp; Guru Kimia</span>
+            <span className="teacher-curriculum-badge">Kurikulum Merdeka • Fase F</span>
+          </div>
+        </div>
+
+        {/* Konten Utama Header */}
+        <div className="teacher-header-main-content">
+          <div className="teacher-header-left">
+            <div className="teacher-badge-icon" aria-hidden="true">
+              👨‍🏫
+            </div>
+            <div className="teacher-title-wrap">
+              <h1 className="teacher-main-title">
+                ReactionLab 11: Pemantauan Kelas &amp; Hasil Belajar Siswa
+              </h1>
+              <p className="teacher-header-sub">
+                Pantau kemajuan membaca 5 bab modul kinetika kimia, waktu login aktif, dan rekapitulasi nilai kuis interaktif 10 soal secara terarah.
+              </p>
+            </div>
+          </div>
+
+          <div className="teacher-header-actions">
+            <button
+              type="button"
+              className="btn btn-secondary btn-export-csv"
+              onClick={handleExportCSV}
+              title="Unduh data tabel dalam format CSV (kompatibel Excel & Google Sheets)"
+            >
+              📥 Ekspor Rekap (CSV/Excel)
+            </button>
+          </div>
         </div>
       </header>
 

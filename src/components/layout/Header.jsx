@@ -2,9 +2,13 @@ import React from 'react';
 import './Header.css';
 
 /**
- * Komponen Header Aplikasi ReactionLab 11
- * Menampilkan logo, navigasi antar-bab (Bab 1–5, Kuis 10 Soal),
- * status login pengguna (Nama, Kelas, Tombol Keluar), atau tombol Masuk / Daftar.
+ * Komponen Top Header Aplikasi ReactionLab 11
+ * Versi baru yang lebih simpel, bersih, dan elegan setelah navigasi dipindahkan ke Sidebar samping.
+ * Menampilkan:
+ * - Tombol hamburger (toggle sidebar mobile & desktop)
+ * - Breadcrumb / indikator halaman aktif
+ * - Status mode siswa & tombol akses cepat ke Panel Guru
+ * - Status profil pengguna / tombol Masuk-Daftar
  */
 export default function Header({
   activeView = 'home',
@@ -12,105 +16,114 @@ export default function Header({
   currentUser = null,
   isGuest = false,
   onOpenAuth,
-  onLogout
+  onLogout,
+  onToggleSidebar
 }) {
+  const VIEW_MAP = {
+    'home': {
+      category: 'ReactionLab 11',
+      title: 'Beranda Laboratorium',
+      icon: '🏠'
+    },
+    'module-1': {
+      category: 'Materi Belajar',
+      title: 'Bab 1: Konsep Laju Reaksi & Mol',
+      icon: '⏱️'
+    },
+    'module-2': {
+      category: 'Praktikum Virtual',
+      title: 'Bab 2: Teori Tumbukan & Simulator',
+      icon: '💥'
+    },
+    'module-3': {
+      category: 'Laboratorium Virtual',
+      title: 'Bab 3: 4 Faktor Laju Reaksi',
+      icon: '🧪'
+    },
+    'module-4': {
+      category: 'Analisis Data',
+      title: 'Bab 4: Penentuan Orde & Diagram Ea',
+      icon: '📊'
+    },
+    'module-5': {
+      category: 'Evaluasi Pembelajaran',
+      title: 'Bab 5: Evaluasi Mandiri & Diagnostik',
+      icon: '🏆'
+    },
+    'quiz': {
+      category: 'Asesmen Mandiri',
+      title: 'Kuis Interaktif 10 Soal',
+      icon: '📝'
+    },
+    'teacher-panel': {
+      category: 'Portal Pengajar',
+      title: 'Panel Pemantauan Guru',
+      icon: '👨‍🏫'
+    }
+  };
+
+  const currentInfo = VIEW_MAP[activeView] || VIEW_MAP['home'];
+
   return (
-    <header className="app-header">
-      <div className="header-inner">
-        {/* Brand / Logo Platform */}
-        <div
-          className="header-brand"
-          onClick={() => onSelectView('home')}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => e.key === 'Enter' && onSelectView('home')}
-        >
-          <div className="brand-icon-box" aria-hidden="true">
-            ⚗️
-          </div>
-          <div className="brand-text-wrap">
-            <span className="brand-title">
-              ReactionLab <span className="brand-badge">11</span>
+    <header className="app-top-header">
+      <div className="top-header-inner">
+        {/* Sisi Kiri: Tombol Hamburger Menu & Indikator Halaman */}
+        <div className="top-header-left">
+          <button
+            type="button"
+            className="btn-hamburger"
+            onClick={onToggleSidebar}
+            aria-label="Buka / Tutup Menu Navigasi"
+            title="Menu Samping"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+
+          {/* Indikator Lokasi Halaman yang Bersih & Simpel */}
+          <div className="header-location-pill">
+            <span className="location-category">{currentInfo.category}</span>
+            <span className="location-divider">/</span>
+            <span className="location-title">
+              <span className="location-icon" aria-hidden="true">{currentInfo.icon}</span>
+              {currentInfo.title}
             </span>
-            <span className="brand-subtitle">Laboratorium &amp; Lembar Belajar Laju Reaksi</span>
           </div>
         </div>
 
-        {/* Navigasi Halaman Utama */}
-        <nav className="header-nav" aria-label="Navigasi Lembar Praktikum">
-          <button
-            type="button"
-            className={`nav-link-btn ${activeView === 'home' ? 'active' : ''}`}
-            onClick={() => onSelectView('home')}
-          >
-            🏠 Beranda
-          </button>
-          <button
-            type="button"
-            className={`nav-link-btn ${activeView === 'module-1' ? 'active' : ''}`}
-            onClick={() => onSelectView('module-1')}
-          >
-            ⏱️ Bab 1 (Laju &amp; Mol)
-          </button>
-          <button
-            type="button"
-            className={`nav-link-btn ${activeView === 'module-2' ? 'active' : ''}`}
-            onClick={() => onSelectView('module-2')}
-          >
-            💥 Bab 2 (Teori Tumbukan)
-          </button>
-          <button
-            type="button"
-            className={`nav-link-btn ${activeView === 'module-3' ? 'active' : ''}`}
-            onClick={() => onSelectView('module-3')}
-          >
-            🧪 Bab 3 (Faktor Laju)
-          </button>
-          <button
-            type="button"
-            className={`nav-link-btn ${activeView === 'module-4' ? 'active' : ''}`}
-            onClick={() => onSelectView('module-4')}
-          >
-            📊 Bab 4 (Analisis &amp; Energi)
-          </button>
-          <button
-            type="button"
-            className={`nav-link-btn ${activeView === 'module-5' ? 'active' : ''}`}
-            onClick={() => onSelectView('module-5')}
-          >
-            🏆 Bab 5 (Evaluasi Akhir)
-          </button>
-          <button
-            type="button"
-            className={`nav-link-btn nav-link-btn--highlight ${activeView === 'quiz' ? 'active' : ''}`}
-            onClick={() => onSelectView('quiz')}
-          >
-            📝 Kuis (10 Soal)
-          </button>
-        </nav>
+        {/* Sisi Kanan: Status Kurikulum, Akses Guru & Status Akun */}
+        <div className="top-header-right">
+          {/* Badge Kurikulum (Ringkas) */}
+          <span className="curriculum-badge" title="Materi Standar Kurikulum Merdeka Kimia Fase F (Kelas XI SMA)">
+            <span className="badge-dot">●</span> Fase F · Kelas XI SMA
+          </span>
 
-        {/* Sisi Kanan: Akses Khusus Panel Guru & Status Akun Pengguna */}
-        <div className="header-meta">
-          {/* Tombol Akses Khusus Panel Guru (Terpisah dari Navigasi Bab) */}
+          {/* Tombol Akses Panel Guru Cepat */}
           <button
             type="button"
-            className="btn-teacher-portal-access"
+            className="btn-quick-teacher"
             onClick={() => onSelectView('teacher-panel')}
-            title="Buka Panel Guru (Pemantauan Hasil Asesmen, Skor Kuis, & Ketuntasan Siswa)"
+            title="Buka Panel Guru (Pemantauan Hasil Asesmen & Nilai Siswa)"
           >
             👨‍🏫 Panel Guru
           </button>
 
+          {/* Status Akun Pengguna / Tombol Masuk */}
           {currentUser ? (
-            <div className="user-profile-badge animate-fade-in" title={`Masuk sebagai: ${currentUser.email}`}>
-              <span className="user-avatar">{currentUser.avatarInitial || '👤'}</span>
-              <div className="user-info-text">
-                <span className="user-name">{currentUser.name}</span>
-                <span className="user-class">{currentUser.className}</span>
+            <div className="user-top-pill" title={`Masuk sebagai: ${currentUser.email}`}>
+              <span className="user-top-avatar">
+                {currentUser.avatarInitial || '👤'}
+              </span>
+              <div className="user-top-text">
+                <span className="user-top-name">{currentUser.name}</span>
+                <span className="user-top-role">{currentUser.className || 'Siswa'}</span>
               </div>
               <button
                 type="button"
-                className="btn-logout"
+                className="btn-top-logout"
                 onClick={onLogout}
                 title="Keluar dari Akun"
               >
@@ -118,19 +131,19 @@ export default function Header({
               </button>
             </div>
           ) : (
-            <div className="header-auth-group">
+            <div className="top-auth-group">
               {isGuest && (
-                <span className="guest-badge-pill" title="Anda sedang dalam Mode Akses Terbuka (Tamu)">
-                  <span className="pill-dot">●</span> Mode Tamu
+                <span className="top-guest-badge" title="Mode Tamu">
+                  Tamu
                 </span>
               )}
               <button
                 type="button"
-                className="btn-auth-header"
+                className="btn-top-auth"
                 onClick={onOpenAuth}
-                title="Buka Halaman Masuk / Daftar"
+                title="Masuk atau Daftar Akun"
               >
-                🔑 Masuk / Daftar
+                🔑 Masuk
               </button>
             </div>
           )}
