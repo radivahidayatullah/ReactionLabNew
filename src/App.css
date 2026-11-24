@@ -19,6 +19,46 @@
   padding: 1.5rem 1.25rem 4rem;
 }
 
+/* Breadcrumb Navigasi Halaman */
+.view-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.view-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.breadcrumb-back-btn {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.breadcrumb-back-btn:hover {
+  background-color: var(--color-primary-light);
+}
+
+.breadcrumb-separator {
+  color: var(--border-medium);
+}
+
+.breadcrumb-current {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
 /* ============================================================
    1. HERO SECTION & WORKSHEET HEADER
    ============================================================ */
@@ -186,6 +226,17 @@
   width: 100%;
 }
 
+.btn-quiz-cta {
+  background-color: #10b981;
+  color: #ffffff;
+  border-color: #059669;
+}
+
+.btn-quiz-cta:hover {
+  background-color: #059669;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+}
+
 /* ============================================================
    2. SECTION HEADERS & GENERAL CARD CONTAINERS
    ============================================================ */
@@ -219,10 +270,16 @@
 }
 
 /* ============================================================
-   3. MODUL CARDS (MODUL 1 AKTIF VS MODUL RENCANA LAIN TERKUNCI)
+   3. MODUL CARDS (MODUL AKTIF VS TERKUNCI)
    ============================================================ */
-.module-highlight-wrapper {
-  margin-bottom: 2rem;
+.featured-modules-row {
+  margin-bottom: 3rem;
+}
+
+.active-modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
 }
 
 .module-card {
@@ -236,7 +293,6 @@
   position: relative;
 }
 
-/* Modul Aktif (Bab 1) */
 .module-card--active {
   border-color: #93c5fd;
   box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);
@@ -248,7 +304,6 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Modul Terkunci / Belum Tersedia (Bab 2–5) */
 .module-card--disabled {
   background-color: #fbfcfd;
   border: 1px dashed #cbd5e1;
@@ -394,7 +449,6 @@
   flex-shrink: 0;
 }
 
-/* Grid Rencana Bab Lain (Bab 2-5) */
 .upcoming-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -482,7 +536,7 @@
   margin-bottom: 0;
 }
 
-/* Navigasi Tab Bagian Belajar (1.1, 1.2, 1.3, 1.4) */
+/* Navigasi Tab Bagian Belajar */
 .learning-sections-nav {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -589,6 +643,263 @@
   font-size: 0.875rem;
   color: var(--text-primary);
   line-height: 1.5;
+}
+
+/* ============================================================
+   TABEL & GRAFIK KONSENTRASI TERHADAP WAKTU (PRD 5.1)
+   ============================================================ */
+.lab-graph-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.card-header-styled {
+  margin-bottom: 1.25rem;
+}
+
+.card-badge-accent {
+  display: inline-block;
+  background-color: #e0f2fe;
+  color: #0369a1;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.35rem;
+}
+
+.card-title-styled {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.card-desc-styled {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.graph-table-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.data-table-container {
+  overflow-x: auto;
+}
+
+.lab-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  font-size: 0.85rem;
+}
+
+.lab-table th,
+.lab-table td {
+  padding: 0.65rem 0.85rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.lab-table th {
+  background-color: #f1f5f9;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.reactant-val {
+  color: #0284c7;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.product-val {
+  color: #10b981;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.table-caption {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+}
+
+.svg-chart-container {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.concentration-svg {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+}
+
+.chart-legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.legend-chip {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.legend-chip.blue {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+
+.legend-chip.green {
+  background-color: #d1fae5;
+  color: #059669;
+}
+
+/* Pertanyaan Diagnostik PRD Bab 1 */
+.diagnostic-question-box {
+  background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.diagnostic-badge {
+  display: inline-block;
+  background-color: #fef3c7;
+  color: #92400e;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.5rem;
+}
+
+.diagnostic-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #78350f;
+  margin-bottom: 0.5rem;
+}
+
+.diagnostic-prompt {
+  font-size: 0.925rem;
+  color: #451a03;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid #f59e0b;
+}
+
+.diagnostic-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.diagnostic-opt-btn {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1rem;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.diagnostic-opt-btn:hover {
+  background-color: #fffdf5;
+  border-color: #f59e0b;
+}
+
+.diagnostic-opt-btn.selected {
+  border-color: #f59e0b;
+  background-color: #fefce8;
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.15);
+}
+
+.opt-indicator {
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.opt-text {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.diagnostic-feedback-banner {
+  margin-top: 1.25rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.diagnostic-feedback-banner.correct {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.diagnostic-feedback-banner.incorrect {
+  background-color: #fff1f2;
+  color: #9f1239;
+  border: 1px solid #fecdd3;
+}
+
+.module-footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  margin-top: 2rem;
+}
+
+.footer-nav-text strong {
+  font-size: 1rem;
+  color: var(--text-primary);
+  display: block;
+}
+
+.footer-nav-text p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0.25rem 0 0 0;
 }
 
 /* ============================================================
@@ -872,6 +1183,7 @@
   border-radius: var(--radius-lg);
   padding: 1.75rem;
   box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
 }
 
 .calc-header {
@@ -968,7 +1280,6 @@
   font-style: italic;
 }
 
-/* Panel Hasil Perhitungan */
 .calc-results-panel {
   display: flex;
   flex-direction: column;
@@ -1052,7 +1363,751 @@
 }
 
 /* ============================================================
-   7. FOOTER
+   7. BAB 5: LEMBAR EVALUASI & DIAGNOSTIK
+   ============================================================ */
+.evaluation-hero-card {
+  background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+  border: 1px solid #93c5fd;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.eval-hero-icon {
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+
+.eval-hero-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.eval-hero-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.quiz-result-summary-card {
+  background-color: #ffffff;
+  border: 2px solid #a7f3d0;
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.08);
+}
+
+.result-badge-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.text-muted-sm {
+  font-size: 0.775rem;
+  color: var(--text-muted);
+}
+
+.result-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-box {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.775rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.stat-score {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #047857;
+  font-family: var(--font-mono);
+}
+
+.stat-max {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.stat-number {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.stat-badge {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  margin-top: 0.25rem;
+}
+
+.badge-mastered {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.badge-needs-practice {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* Matriks Kognitif Bab 5 */
+.cognitive-matrix-section {
+  margin-bottom: 2.5rem;
+}
+
+.levels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.level-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.level-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 0.35rem;
+}
+
+.level-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.level-target {
+  font-size: 0.775rem;
+  background-color: var(--bg-secondary);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--color-primary);
+  color: var(--text-primary);
+}
+
+/* Kotak Rekomendasi Bab 5 */
+.recommendations-box {
+  background-color: #f8fafc;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.rec-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.rec-icon {
+  font-size: 1.5rem;
+}
+
+.rec-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.rec-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0.2rem 0 0 0;
+}
+
+.rec-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rec-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.rec-bullet {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rec-item strong {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.rec-item p {
+  font-size: 0.825rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.eval-footer-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+/* ============================================================
+   8. HALAMAN KUIS INTERAKTIF (InteractiveQuiz)
+   ============================================================ */
+.quiz-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.quiz-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1.25rem;
+}
+
+.quiz-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.quiz-main-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.quiz-subtitle-text {
+  font-size: 0.775rem;
+  color: var(--text-secondary);
+}
+
+.quiz-progress-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.quiz-progress-track {
+  width: 100%;
+  height: 8px;
+  background-color: #e2e8f0;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.quiz-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary) 0%, #10b981 100%);
+  transition: width 0.3s ease;
+}
+
+/* Quick Jump Nomor Soal */
+.question-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.q-pill-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  background-color: #ffffff;
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.q-pill-btn:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--color-primary);
+}
+
+.q-pill-btn.current {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+}
+
+.q-pill-btn.answered:not(.current) {
+  background-color: #d1fae5;
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+/* Kartu Soal */
+.quiz-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.quiz-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.badge-category {
+  background-color: #f1f5f9;
+  color: #475569;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-full);
+}
+
+.quiz-question-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+  white-space: pre-line;
+}
+
+.hint-wrapper {
+  margin-bottom: 1.25rem;
+}
+
+.btn-hint {
+  background: none;
+  border: none;
+  color: #b45309;
+  font-size: 0.825rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.btn-hint:hover {
+  text-decoration: underline;
+}
+
+.hint-box {
+  background-color: #fefce8;
+  border: 1px dashed #fde047;
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  color: #713f12;
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.option-btn {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-height: 52px;
+}
+
+.option-btn:hover:not(:disabled) {
+  background-color: #f8fafc;
+  border-color: #93c5fd;
+}
+
+.option-btn.selected {
+  background-color: #f0f9ff;
+  border-color: var(--color-primary);
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.15);
+}
+
+.option-btn.correct-opt {
+  background-color: #ecfdf5;
+  border-color: #10b981;
+  color: #065f46;
+}
+
+.option-btn.wrong-opt {
+  background-color: #fff1f2;
+  border-color: #ef4444;
+  color: #9f1239;
+}
+
+.option-letter {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-weight: 800;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.option-btn.selected .option-letter {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.option-btn.correct-opt .option-letter {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+.option-btn.wrong-opt .option-letter {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.option-text {
+  font-size: 0.925rem;
+  color: var(--text-primary);
+  line-height: 1.45;
+  flex: 1;
+}
+
+.opt-status-icon {
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.explanation-box {
+  background-color: #f8fafc;
+  border: 1px solid #bfdbfe;
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.explanation-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.explanation-content {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.quiz-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-light);
+  padding-top: 1.25rem;
+  gap: 1rem;
+}
+
+.footer-right-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Rapor Hasil Kuis */
+.quiz-report-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.report-header {
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.75rem;
+  text-align: center;
+}
+
+.report-badge {
+  display: inline-block;
+  background-color: #d1fae5;
+  color: #065f46;
+  font-size: 0.775rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 0.5rem;
+}
+
+.report-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.report-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.score-summary-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+  border: 1px solid #86efac;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.score-circle {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 6px solid #10b981;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+}
+
+.score-number {
+  font-size: 2.75rem;
+  font-weight: 900;
+  color: #047857;
+  font-family: var(--font-mono);
+  line-height: 1;
+}
+
+.score-denom {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.score-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.score-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.score-item-label {
+  color: var(--text-secondary);
+}
+
+.score-item-val {
+  font-weight: 800;
+}
+
+.score-item-val.correct {
+  color: #10b981;
+}
+
+.score-item-val.incorrect {
+  color: #ef4444;
+}
+
+.status-pill {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.status-pill.pass {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-pill.need-review {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* Rincian Analisis Jawaban */
+.report-breakdown-section {
+  margin-bottom: 2.5rem;
+}
+
+.breakdown-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+
+.breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.breakdown-item {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+
+.breakdown-item.item-correct {
+  background-color: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.breakdown-item.item-incorrect {
+  background-color: #fff1f2;
+  border-color: #fecdd3;
+}
+
+.breakdown-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.breakdown-q-num {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.breakdown-q-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.breakdown-q-text {
+  font-size: 0.925rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  white-space: pre-line;
+}
+
+.breakdown-q-expl {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.report-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  border-top: 1px solid var(--border-light);
+  padding-top: 1.5rem;
+}
+
+/* ============================================================
+   9. FOOTER
    ============================================================ */
 .app-footer {
   background-color: #ffffff;
@@ -1121,16 +2176,1015 @@
 }
 
 /* ============================================================
-   8. MEDIA QUERIES UNTUK LAYAR PONSEL (MOBILE RESPONSIVE)
+   10. BAB 2: TEORI TUMBUKAN & SIMULATOR PARTIKEL
+   ============================================================ */
+.inquiry-prediction-box {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+  border: 1px solid #86efac;
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.inquiry-badge {
+  display: inline-block;
+  background-color: #dcfce7;
+  color: #166534;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.5rem;
+}
+
+.inquiry-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #14532d;
+  margin-bottom: 0.5rem;
+}
+
+.inquiry-prompt {
+  font-size: 0.925rem;
+  color: #166534;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid #10b981;
+}
+
+.prediction-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.prediction-btn {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1.1rem;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.prediction-btn:hover {
+  background-color: #f0fdf4;
+  border-color: #86efac;
+}
+
+.prediction-btn.selected {
+  border-color: #10b981;
+  background-color: #ecfdf5;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15);
+}
+
+.pred-bullet {
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.pred-text {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.prediction-feedback {
+  margin-top: 1.25rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.feedback-success {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.feedback-caution {
+  background-color: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+/* Canvas Area */
+.canvas-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sim-canvas-viewport {
+  width: 100%;
+  height: 320px;
+  background-color: #0b1329;
+  border-radius: var(--radius-md);
+  border: 2px solid #1e293b;
+  display: block;
+}
+
+.sim-legend-banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.85rem;
+  font-size: 0.775rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.sim-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.color-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.color-dot.cyan {
+  background-color: #06b6d4;
+  box-shadow: 0 0 6px #06b6d4;
+}
+
+.color-dot.amber {
+  background-color: #f59e0b;
+  box-shadow: 0 0 6px #f59e0b;
+}
+
+.color-dot.emerald {
+  background-color: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.sim-academic-note {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.controls-panel-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.control-hint {
+  font-size: 0.725rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.metrics-scoreboard {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.875rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.metric-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-cell--highlight .metric-data {
+  color: #10b981;
+}
+
+.metric-cell--full {
+  grid-column: 1 / -1;
+  border-top: 1px dashed var(--border-light);
+  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.metric-percentage {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--color-primary);
+  font-family: var(--font-mono);
+}
+
+.sim-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.btn-sim {
+  font-size: 0.825rem;
+  font-weight: 700;
+  padding: 0.6rem;
+  text-align: center;
+}
+
+/* Skema Perbandingan Orientasi Tumbukan */
+.collision-theory-visual-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.orientation-comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.orientation-card {
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.failure-card {
+  background-color: #fff1f2;
+  border: 1px solid #fecdd3;
+}
+
+.success-card {
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+}
+
+.orientation-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.status-indicator-badge {
+  font-size: 0.775rem;
+  font-weight: 800;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.status-indicator-badge.red {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.status-indicator-badge.green {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.sub-tag {
+  font-size: 0.725rem;
+  color: var(--text-muted);
+}
+
+.schematic-drawing {
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.molecule-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.atom-pair {
+  display: inline-flex;
+  align-items: center;
+}
+
+.atom-pair.vertical {
+  flex-direction: column;
+}
+
+.atom {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #ffffff;
+}
+
+.atom-a {
+  background-color: #06b6d4;
+}
+
+.atom-b {
+  background-color: #f59e0b;
+}
+
+.atom-product {
+  background-color: #10b981;
+  width: 44px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+}
+
+.bond {
+  font-weight: bold;
+  padding: 0 0.15rem;
+  color: #64748b;
+}
+
+.collide-arrow {
+  font-weight: 800;
+  color: #ef4444;
+  font-size: 0.9rem;
+}
+
+.collide-arrow.green {
+  color: #10b981;
+}
+
+.trans-arrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #047857;
+  margin: 0.25rem 0;
+}
+
+.products-formed {
+  display: flex;
+  align-items: center;
+}
+
+.schematic-result {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   11. BAB 3: LABORATORIUM VIRTUAL FAKTOR-FAKTOR LAJU REAKSI
+   ============================================================ */
+.virtual-lab-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.virtual-lab-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 1.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.apparatus-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.apparatus-display {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 2px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  min-height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Labu Reaksi */
+.flask-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 110px;
+}
+
+.flask-neck {
+  width: 30px;
+  height: 35px;
+  border: 2px solid #475569;
+  border-bottom: none;
+  background-color: transparent;
+}
+
+.flask-body {
+  width: 100px;
+  height: 90px;
+  border: 2px solid #475569;
+  border-radius: 0 0 50px 50px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  background-color: #ffffff;
+}
+
+.liquid-layer {
+  width: 100%;
+  position: relative;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.solid-sediment {
+  position: absolute;
+  bottom: 4px;
+  width: 100%;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.powder-cloud {
+  color: #94a3b8;
+  letter-spacing: -2px;
+  font-size: 0.9rem;
+}
+
+.chunks-group {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.bubbles-stream {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  pointer-events: none;
+}
+
+.bubble {
+  font-size: 0.65rem;
+  animation: floatUp 1s infinite ease-in;
+}
+
+.bubble.b1 { animation-delay: 0.1s; }
+.bubble.b2 { animation-delay: 0.4s; }
+.bubble.b3 { animation-delay: 0.7s; }
+.bubble.b4 { animation-delay: 0.25s; }
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 0.8; }
+  100% { transform: translateY(-40px); opacity: 0; }
+}
+
+.flask-label {
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+/* Pipa Gas */
+.connecting-tube {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.tube-line {
+  width: 60px;
+  height: 6px;
+  background-color: #94a3b8;
+  border-radius: 3px;
+}
+
+.tube-flow-arrow {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+/* Penampung Gas / Syringe */
+.gas-syringe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 140px;
+}
+
+.syringe-barrel {
+  width: 100%;
+  height: 38px;
+  border: 2px solid #475569;
+  border-radius: var(--radius-sm);
+  background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.syringe-plunger {
+  height: 100%;
+  background: linear-gradient(90deg, #bae6fd 0%, #38bdf8 100%);
+  transition: width 0.2s linear;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.4rem;
+}
+
+.plunger-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #0369a1;
+  white-space: nowrap;
+}
+
+.syringe-scale {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.syringe-title {
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+}
+
+/* Stopwatch Banner */
+.stopwatch-banner {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.stopwatch-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stopwatch-label {
+  font-size: 0.725rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.stopwatch-digits {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.stopwatch-digits.highlight {
+  color: var(--color-primary);
+}
+
+.experiment-complete-alert {
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1rem;
+  font-size: 0.85rem;
+  color: #065f46;
+  line-height: 1.5;
+}
+
+/* Panel Kontrol Variabel Lab */
+.lab-controls-panel {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.variable-control-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.variable-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.variable-tag {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+}
+
+.btn-options-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-opt {
+  flex: 1;
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.6rem;
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-opt:hover {
+  background-color: #f8fafc;
+  border-color: #93c5fd;
+}
+
+.btn-opt.active {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  box-shadow: 0 1px 3px rgba(2, 132, 199, 0.25);
+}
+
+.variable-help {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.lab-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.sub-buttons-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sub-buttons-row .btn {
+  flex: 1;
+  font-size: 0.775rem;
+  padding: 0.5rem;
+}
+
+.btn-save {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border-color: #a7f3d0;
+  font-weight: 700;
+}
+
+.btn-save:hover:not(:disabled) {
+  background-color: #d1fae5;
+}
+
+/* Tabel Hasil Eksperimen */
+.experiment-comparison-table-section {
+  border-top: 1px solid var(--border-light);
+  padding-top: 1.5rem;
+}
+
+.table-section-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.table-responsive-wrapper {
+  overflow-x: auto;
+}
+
+.table-note-academic {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+}
+
+/* ============================================================
+   12. BAB 4: ANALISIS DATA & DIAGRAM PROFIL ENERGI
+   ============================================================ */
+.order-calculation-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.highlight-row {
+  background-color: #f0f9ff;
+}
+
+.highlight-row-alt {
+  background-color: #fefce8;
+}
+
+.steps-reasoning-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.reasoning-step-box {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.reasoning-step-box--primary {
+  background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
+  border-color: #86efac;
+}
+
+.step-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.step-badge--green {
+  color: #15803d;
+}
+
+.step-text {
+  font-size: 0.825rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.step-math {
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.step-conclusion {
+  font-size: 0.775rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.final-law-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.rate-formula-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 700;
+}
+
+.law-equation {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #166534;
+  font-family: var(--font-mono);
+  background-color: #dcfce7;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+}
+
+.total-order {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #15803d;
+}
+
+.k-value-box {
+  font-size: 0.825rem;
+  color: var(--text-secondary);
+  background-color: #ffffff;
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #86efac;
+  line-height: 1.5;
+}
+
+/* Diagram Energi Interaktif */
+.energy-diagram-section {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.diagram-toggle-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.toggle-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.toggle-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.btn-toggle {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.45rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-toggle:hover {
+  background-color: #f1f5f9;
+}
+
+.btn-toggle.active {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  box-shadow: 0 1px 4px rgba(2, 132, 199, 0.25);
+}
+
+.energy-svg-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.energy-profile-svg {
+  width: 100%;
+  max-width: 680px;
+  height: auto;
+}
+
+.energy-legend-box {
+  width: 100%;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--border-light);
+}
+
+.legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.legend-item-tag {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+}
+
+.legend-item-tag.red {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.legend-item-tag.green {
+  background-color: #d1fae5;
+  color: #047857;
+}
+
+.energy-principles-summary {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 0.875rem 1.25rem;
+  font-size: 0.825rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.energy-principles-summary ul {
+  margin: 0.35rem 0 0 1.2rem;
+  padding: 0;
+}
+
+.footer-nav-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* ============================================================
+   13. MEDIA QUERIES UNTUK LAYAR PONSEL (MOBILE RESPONSIVE)
    ============================================================ */
 @media (max-width: 900px) {
   .calc-grid,
-  .formula-grid {
+  .formula-grid,
+  .graph-table-grid,
+  .orientation-comparison-grid,
+  .virtual-lab-grid,
+  .simulation-layout {
     grid-template-columns: 1fr;
   }
 
   .formula-legend {
     grid-template-columns: 1fr;
+  }
+
+  .evaluation-hero-card {
+    flex-direction: column;
+    text-align: center;
   }
 }
 
@@ -1155,7 +3209,9 @@
     flex-direction: column;
   }
 
-  .lab-worksheet-section {
+  .lab-worksheet-section,
+  .quiz-card,
+  .quiz-report-card {
     padding: 1.25rem 1rem;
   }
 
@@ -1179,6 +3235,16 @@
 
   .final-rate-number {
     font-size: 1.15rem;
+  }
+
+  .score-summary-box {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .quiz-top-bar {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .footer-inner {
@@ -1209,4 +3275,767 @@
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .quiz-card-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .footer-right-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .footer-right-actions .btn {
+    width: 100%;
+  }
+}
+
+/* ============================================================
+   8. HALAMAN AUTENTIKASI (LOGIN, REGISTER, LUPA PASSWORD)
+   ============================================================ */
+
+/* Banner Status Akun di Beranda */
+.user-welcome-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.15rem;
+  margin-bottom: 1.25rem;
+}
+
+.welcome-avatar-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.welcome-text {
+  font-size: 0.85rem;
+  color: #166534;
+  line-height: 1.4;
+}
+
+.auth-reminder-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.15rem;
+  margin-bottom: 1.25rem;
+}
+
+.reminder-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.reminder-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.reminder-text {
+  font-size: 0.825rem;
+  color: #1e40af;
+  line-height: 1.35;
+}
+
+.btn-reminder-auth {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border: none;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+  box-shadow: 0 1px 3px rgba(2, 132, 199, 0.25);
+  flex-shrink: 0;
+}
+
+.btn-reminder-auth:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+/* Pembungkus Halaman Autentikasi Terpadu */
+.auth-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 0 3rem;
+  width: 100%;
+}
+
+.auth-card {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+}
+
+.auth-close-btn {
+  position: absolute;
+  top: 1.15rem;
+  right: 1.15rem;
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.auth-close-btn:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.auth-logo-badge {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 0.75rem;
+  background-color: var(--color-primary-light);
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+}
+
+.auth-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 0.4rem;
+}
+
+.auth-subtitle {
+  font-size: 0.825rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Pesan Banner Peringatan / Sukses */
+.auth-alert-banner {
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-md);
+  font-size: 0.825rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.alert-danger {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+
+.alert-success {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+}
+
+/* Tombol Masuk dengan Akun Google */
+.btn-google-auth {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background-color: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-google-auth:hover:not(:disabled) {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.btn-google-auth:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Pembatas Divider "atau masuk dengan email" */
+.auth-divider {
+  position: relative;
+  text-align: center;
+  margin: 1.35rem 0;
+}
+
+.auth-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--border-light);
+}
+
+.auth-divider span {
+  position: relative;
+  background-color: #ffffff;
+  padding: 0 0.75rem;
+  font-size: 0.775rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Formulir Input & Tombol */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.auth-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+}
+
+.auth-form .form-label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.label-with-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.link-btn-sm {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.link-btn-sm:hover {
+  text-decoration: underline;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  background-color: #ffffff;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+.req {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.input-hint {
+  font-size: 0.725rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+  line-height: 1.35;
+}
+
+.btn-auth-submit {
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+}
+
+.auth-switch-footer {
+  text-align: center;
+  margin-top: 1.25rem;
+  font-size: 0.825rem;
+  color: var(--text-secondary);
+}
+
+.link-btn-highlight {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.link-btn-secondary {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.link-btn-secondary:hover {
+  color: var(--text-primary);
+}
+
+.forgot-success-box {
+  text-align: center;
+  padding: 1.25rem 0.5rem;
+}
+
+.forgot-success-box .success-icon {
+  font-size: 2.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.forgot-success-box h4 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #166534;
+  margin: 0 0 0.5rem;
+}
+
+.forgot-success-box p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin-bottom: 1.25rem;
+}
+
+/* Opsi Lanjut Belajar Mode Tamu */
+.auth-guest-notice {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-light);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.link-guest-btn {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ============================================================
+   9. HALAMAN LOGIN TERSENDIRI (STANDALONE ENTRY PORTAL)
+   ============================================================ */
+.portal-page-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 55%, #f0fdf4 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.25rem;
+}
+
+.portal-container {
+  max-width: 1120px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.15fr 0.9fr;
+  gap: 2.75rem;
+  align-items: center;
+}
+
+.portal-hero-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.portal-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.portal-logo-icon {
+  width: 46px;
+  height: 46px;
+  background-color: #ffffff;
+  border: 1.5px solid #bfdbfe;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.12);
+  flex-shrink: 0;
+}
+
+.portal-brand-meta {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.portal-brand-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.portal-brand-sub {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.portal-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  border: 1px solid #bae6fd;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.775rem;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.portal-heading {
+  font-size: 2.15rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1.22;
+  margin: 0.5rem 0 0.6rem;
+  letter-spacing: -0.02em;
+}
+
+.portal-subheading {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 0.5rem;
+}
+
+.portal-highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+  margin: 0.5rem 0;
+}
+
+.portal-highlight-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  transition: all var(--transition-fast);
+}
+
+.portal-highlight-card:hover {
+  transform: translateY(-2px);
+  border-color: #93c5fd;
+  background-color: #ffffff;
+}
+
+.portal-highlight-card .highlight-icon {
+  font-size: 1.35rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.portal-highlight-card strong {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.portal-highlight-card p {
+  font-size: 0.725rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.portal-guarantee-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.guarantee-pill {
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: #065f46;
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.portal-card-pane {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Kotak Khusus Opsi Masuk Mode Tamu */
+.auth-guest-box {
+  margin-top: 1.35rem;
+  padding: 1rem 1.15rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+  border: 1.5px dashed #93c5fd;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.guest-box-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.guest-box-icon {
+  font-size: 1.35rem;
+  flex-shrink: 0;
+}
+
+.guest-box-text {
+  text-align: left;
+}
+
+.guest-box-text strong {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.guest-box-text p {
+  font-size: 0.735rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.btn-guest-portal {
+  width: 100%;
+  background-color: #ffffff;
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.btn-guest-portal:hover {
+  background-color: var(--color-primary-light);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(2, 132, 199, 0.15);
+}
+
+/* Responsivitas Layar Tablet & Smartphone */
+@media (max-width: 960px) {
+  .portal-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .portal-hero-pane {
+    align-items: center;
+    text-align: center;
+  }
+
+  .portal-brand-meta {
+    text-align: left;
+  }
+
+  .portal-heading {
+    font-size: 1.85rem;
+  }
+
+  .portal-subheading {
+    max-width: 600px;
+  }
+
+  .portal-guarantee-row {
+    justify-content: center;
+  }
+}
+
+/* Responsivitas pada Layar Smartphone */
+@media (max-width: 480px) {
+  .portal-page-wrapper {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .portal-highlights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-heading {
+    font-size: 1.5rem;
+  }
+
+  .auth-card {
+    padding: 1.5rem 1.15rem;
+    border-radius: var(--radius-md);
+  }
+
+  .auth-reminder-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-reminder-auth {
+    width: 100%;
+    text-align: center;
+  }
+
+  .user-welcome-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ============================================================
+   10. PEMBUNGKUS HALAMAN PANEL GURU (TERPISAH DARI MENU SISWA)
+   ============================================================ */
+.teacher-standalone-wrapper {
+  min-height: 100vh;
+  background-color: var(--bg-secondary);
+  padding: 1.5rem 1.25rem 4rem;
+  width: 100%;
+}
+
+.btn-persona-teacher {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.85rem;
+  background-color: #0f172a;
+  color: #ffffff;
+  border: 1px solid #334155;
+  padding: 0.5rem 0.95rem;
+  border-radius: var(--radius-md);
+  font-size: 0.775rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.1);
+  width: fit-content;
+}
+
+.btn-persona-teacher:hover {
+  background-color: #1e293b;
+  border-color: #64748b;
+  transform: translateY(-1px);
+}
+
+.btn-footer-teacher {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: #0f172a;
+  color: #ffffff;
+  border: 1px solid #334155;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-footer-teacher:hover {
+  background-color: #1e293b;
+  border-color: #64748b;
 }

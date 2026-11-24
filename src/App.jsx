@@ -1,271 +1,550 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/layout/Header';
 import ModuleCard from './components/common/ModuleCard';
 import ModuleOneDetail from './features/chapter1-rate-basics/ModuleOneDetail';
+import ModuleTwoDetail from './features/chapter2-collision-theory/ModuleTwoDetail';
+import ModuleThreeDetail from './features/chapter3-rate-factors/ModuleThreeDetail';
+import ModuleFourDetail from './features/chapter4-data-analysis/ModuleFourDetail';
+import ModuleFiveDetail from './features/chapter5-evaluation/ModuleFiveDetail';
+import InteractiveQuiz from './features/quiz/InteractiveQuiz';
+import AuthPage from './features/auth/AuthPage';
+import TeacherPanel from './features/teacher/TeacherPanel';
 import ChemicalFormula from './components/chemistry/ChemicalFormula';
 import { COURSE_CHAPTERS } from './data/courseChapters';
+import { getStoredData, setStoredData, STORAGE_KEYS } from './utils/storage';
+import { subscribeToAuthChanges, logOut } from './services/firebase';
+import { recordModuleVisited } from './utils/studentTracker';
 import './App.css';
 
 /**
  * Komponen Utama: ReactionLab 11 App
  *
- * Beranda Lembar Belajar Laboratorium untuk Kinetika Kimia & Laju Reaksi.
- * Sesuai PRD:
- * - Menampilkan judul, sasaran pengguna, penjelasan singkat.
- * - Menampilkan Kartu Modul 1 dengan tombol "Mulai Belajar".
- * - Menampilkan kartu modul lain (Bab 2–5) dengan keterangan "Belum Tersedia".
- * - Ruang rumus yang lapang dengan penjelasan spesifik mengenai konsep mol (M = n/V, satuan mol/L·s).
- * - Tidak meminta data pribadi siswa (tanpa login) dan bebas dari fitur berbayar.
+ * Mengelola navigasi halaman (Routing Berbasis State untuk Pemula React):
+ * - 'home'     : Beranda utama, kartu 5 modul kurikulum, ruang rumus & konsep mol
+ * - 'module-1' : Lembar belajar laboratorium lengkap Bab 1 (Laju & Mol)
+ * - 'module-2' : Lembar praktikum virtual Bab 2 (Teori Tumbukan & Simulator Partikel)
+ * - 'module-3' : Laboratorium virtual Bab 3 (Uji 4 Variabel Faktor Laju Reaksi)
+ * - 'module-4' : Lembar analisis data Bab 4 (Penentuan Orde Reaksi & Diagram Energi)
+ * - 'module-5' : Lembar evaluasi komprehensif & diagnostik Bab 5
+ * - 'quiz'     : Halaman kuis interaktif 10 soal kinetika kimia
+ * - 'auth'     : Halaman autentikasi terpadu (Login Google, Register nama/email/kelas, Lupa Password)
  */
 export default function App() {
-  // Bab pertama (Bab 1) aktif sebagai materi awal
+  const [activeView, setActiveView] = useState('home'); // 'home' | 'module-1' | 'module-2' | 'module-3' | 'module-4' | 'module-5' | 'quiz'
+
+  // State pengguna aktif dari LocalStorage (jika ada)
+  const [currentUser, setCurrentUser] = useState(() =>
+    getStoredData(STORAGE_KEYS.AUTH_USER, null)
+  );
+
+  // State mode tamu: aktif jika pengguna memilih "Masuk sebagai Tamu" pada sesi ini
+  const [isGuest, setIsGuest] = useState(false);
+
+  // Tampilkan Halaman Login Tersendiri di awal sebelum masuk ke beranda jika belum login
+  const [showAuthGate, setShowAuthGate] = useState(() => {
+    const stored = getStoredData(STORAGE_KEYS.AUTH_USER, null);
+    return !stored;
+  });
+
   const moduleOne = COURSE_CHAPTERS[0];
+  const moduleTwo = COURSE_CHAPTERS[1];
+  const moduleThree = COURSE_CHAPTERS[2];
+  const moduleFour = COURSE_CHAPTERS[3];
+  const moduleFive = COURSE_CHAPTERS[4];
 
-  // State apakah Lembar Belajar Modul 1 sedang terbuka penuh
-  // Pemula React: `useState` menampung status boolean true/false untuk membuka atau menutup panel materi
-  const [isStudyingModuleOne, setIsStudyingModuleOne] = useState(true);
+  // Handler pergantian tampilan dengan scroll mulus ke atas
+  const handleSelectView = (viewName) => {
+    setActiveView(viewName);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  // Handler tombol "Mulai Belajar"
+    // Catat modul yang dikunjungi untuk pelacakan ketuntasan belajar siswa
+    if (viewName && (viewName.startsWith('module-') || viewName === 'quiz')) {
+      recordModuleVisited(viewName);
+    }
+  };
+
+  // Sinkronisasi Sesi Firebase Authentication secara Otomatis
+  useEffect(() => {
+    const unsubscribe = subscribeToAuthChanges((firebaseUser) => {
+      if (firebaseUser) {
+        setCurrentUser(firebaseUser);
+        setStoredData(STORAGE_KEYS.AUTH_USER, firebaseUser);
+        setShowAuthGate(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Handler saat autentikasi sukses (login / register / google sign-in)
+  const handleAuthSuccess = (user) => {
+    setCurrentUser(user);
+    setIsGuest(false);
+    setShowAuthGate(false);
+    handleSelectView('home');
+  };
+
+  // Handler saat pengguna memilih lanjut sebagai tamu (akses terbuka)
+  const handleGuestAccess = () => {
+    setIsGuest(true);
+    setShowAuthGate(false);
+    handleSelectView('home');
+  };
+
+  // Handler saat pengguna keluar (logout Firebase resmi) -> kembali ke halaman login tersendiri
+  const handleLogout = async () => {
+    try {
+      await logOut();
+    } catch (err) {
+      console.warn('Sign out warning:', err);
+    }
+    setStoredData(STORAGE_KEYS.AUTH_USER, null);
+    setCurrentUser(null);
+    setIsGuest(false);
+    setShowAuthGate(true);
+    handleSelectView('home');
+  };
+
+  // Handler membuka halaman login tersendiri dari dalam aplikasi
+  const handleOpenAuth = () => {
+    setShowAuthGate(true);
+  };
+
+  // Handler pembatalan dari formulir (kembali ke posisi belajar sebelumnya)
+  const handleCancelAuth = () => {
+    if (isGuest || currentUser) {
+      setShowAuthGate(false);
+    } else {
+      handleGuestAccess();
+    }
+  };
+
+  // Handler tombol "Mulai Belajar" dari kartu modul
   const handleStartLearning = (chapter) => {
     if (chapter.id === 'ch1') {
-      setIsStudyingModuleOne(true);
-      // Gulir mulus ke lembar materi
-      setTimeout(() => {
-        const el = document.getElementById('modul-1-belajar');
-        el?.scrollIntoView({ behavior: 'smooth' });
-      }, 50);
+      handleSelectView('module-1');
+    } else if (chapter.id === 'ch2') {
+      handleSelectView('module-2');
+    } else if (chapter.id === 'ch3') {
+      handleSelectView('module-3');
+    } else if (chapter.id === 'ch4') {
+      handleSelectView('module-4');
+    } else if (chapter.id === 'ch5') {
+      handleSelectView('module-5');
     }
   };
 
-  // Handler navigasi dari header
-  const handleNavigateToSection = (sectionId) => {
-    if (sectionId === 'modul-utama') {
-      setIsStudyingModuleOne(true);
-      setTimeout(() => {
-        const el = document.getElementById('modul-1-belajar');
-        el?.scrollIntoView({ behavior: 'smooth' });
-      }, 50);
-    } else {
-      const el = document.getElementById(sectionId);
-      el?.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  // ============================================================
+  // HALAMAN LOGIN TERSENDIRI (SEBELUM MASUK BERANDA & MATERI)
+  // ============================================================
+  if (showAuthGate) {
+    return (
+      <AuthPage
+        isStandalone={true}
+        onAuthSuccess={handleAuthSuccess}
+        onGuestAccess={handleGuestAccess}
+        onCancel={handleCancelAuth}
+      />
+    );
+  }
 
+  // ============================================================
+  // PANEL GURU TERPISAH (TIDAK BERCAMPUR DENGAN MENU ATAU BAB SISWA)
+  // ============================================================
+  if (activeView === 'teacher-panel') {
+    return (
+      <div className="teacher-standalone-wrapper animate-fade-in">
+        <TeacherPanel
+          onBackToStudentView={() => handleSelectView('home')}
+          currentUser={currentUser}
+        />
+      </div>
+    );
+  }
+
+  // ============================================================
+  // APLIKASI UTAMA LEMBAR SISWA (DENGAN HEADER & SELURUH MATERI)
+  // ============================================================
   return (
     <div className="app-container">
-      {/* Header Aplikasi */}
-      <Header onNavigateToSection={handleNavigateToSection} />
+      {/* Header Aplikasi dengan Navigasi Halaman dan Status Akun */}
+      <Header
+        activeView={activeView}
+        onSelectView={handleSelectView}
+        currentUser={currentUser}
+        isGuest={isGuest}
+        onOpenAuth={handleOpenAuth}
+        onLogout={handleLogout}
+      />
 
       <main className="main-content">
         {/* ============================================================ */}
-        {/* 1. HERO SECTION: Judul, Sasaran Pengguna, Penjelasan Singkat */}
+        {/* TAMPILAN 1: HALAMAN KUIS INTERAKTIF (10 SOAL)                */}
         {/* ============================================================ */}
-        <section className="hero-banner" id="hero-section">
-          {/* Metadata Lembar Belajar Lab */}
-          <div className="worksheet-badge-row">
-            <span className="worksheet-pill">
-              🔬 Laboratorium Virtual Kimia SMA
-            </span>
-            <span className="target-pill">
-              🎯 Sasaran: Siswa Kelas XI (Fase F) &amp; Guru Kimia SMA
-            </span>
-            <span className="free-access-pill">
-              ✨ 100% Bebas Akses • Tanpa Login Siswa
-            </span>
-          </div>
-
-          <h1 className="hero-title">
-            ReactionLab: Lembar Belajar &amp; Latihan Laju Reaksi
-          </h1>
-
-          <p className="hero-description">
-            Platform pembelajaran digital interaktif yang dirancang khusus untuk membantu siswa SMA
-            memahami kinetika kimia secara mendalam. Hubungkan fenomena perubahan nyata di laboratorium
-            dengan pergerakan partikel reaktan serta penurunan matematis berbasis <strong>konsep mol</strong> dan <strong>molaritas</strong>.
-          </p>
-
-          {/* Kartu Sasaran Pengguna & Kebutuhan Belajar */}
-          <div className="user-persona-grid">
-            <div className="persona-card">
-              <div className="persona-header">
-                <span className="persona-icon">🎓</span>
-                <span className="persona-role">Untuk Siswa SMA Kelas XI</span>
-              </div>
-              <p className="persona-text">
-                Belajar mandiri secara terstruktur tanpa hafalan rumus kosong. Pahami mengapa laju dinyatakan dalam <em>mol per liter tiap detik</em>, amati perubahan zat, dan latih perhitungan dengan umpan balik visual langsung.
-              </p>
-            </div>
-
-            <div className="persona-card">
-              <div className="persona-header">
-                <span className="persona-icon">👩‍🏫</span>
-                <span className="persona-role">Untuk Guru Kimia SMA</span>
-              </div>
-              <p className="persona-text">
-                Media peraga digital interaktif di kelas yang membedah keterkaitan stoikiometri koefisien reaksi, grafik konsentrasi terhadap waktu, serta persiapan praktikum uji faktor laju reaksi.
-              </p>
-            </div>
-          </div>
-
-          {/* Formula Strip Sampel Laboratorium */}
-          <div className="lab-sample-strip">
-            <span className="strip-title">🧪 Model Reaksi Praktikum:</span>
-            <div className="strip-equations">
-              <span className="equation-tag">
-                <ChemicalFormula formula="CaCO3(s) + 2HCl(aq) -> CaCl2(aq) + H2O(l) + CO2(g)" />
-              </span>
-              <span className="equation-separator">•</span>
-              <span className="equation-tag">
-                <ChemicalFormula formula="Na2S2O3(aq) + 2HCl(aq) -> 2NaCl(aq) + SO2(g) + S(s) + H2O(l)" />
-              </span>
-            </div>
-          </div>
-
-          {/* Tombol Aksi Utama */}
-          <div className="hero-actions">
-            <button
-              type="button"
-              className="btn btn-primary btn-lg"
-              onClick={() => handleStartLearning(moduleOne)}
-            >
-              Mulai Belajar Modul 1 ➔
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary btn-lg"
-              onClick={() => {
-                const el = document.getElementById('ruang-rumus');
-                el?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Lihat Ruang Rumus &amp; Mol 📐
-            </button>
-          </div>
-        </section>
+        {activeView === 'quiz' && (
+          <InteractiveQuiz
+            onBackToHome={() => handleSelectView('home')}
+            onNavigateToModuleOne={() => handleSelectView('module-1')}
+            onNavigateToModuleFive={() => handleSelectView('module-5')}
+          />
+        )}
 
         {/* ============================================================ */}
-        {/* 2. MODUL 1 AKTIF: KARTU MODUL & LEMBAR BELAJAR INTERAKTIF    */}
+        {/* TAMPILAN 2: LEMBAR BELAJAR LABORATORIUM MODUL 1 (LENGKAP)    */}
         {/* ============================================================ */}
-        <section className="featured-module-section" id="modul-utama">
-          <div className="section-header">
-            <div className="section-eyebrow">Modul Pembelajaran Aktif</div>
-            <h2 className="section-title">Modul 1: Mengenal Laju Reaksi &amp; Konsep Mol</h2>
-            <p className="section-desc">
-              Modul ini merupakan fondasi utama kinetika kimia. Pelajari bagaimana berkurangnya mol reaktan atau bertambahnya mol produk dihitung dalam satuan konsentrasi molaritas per detik.
-            </p>
-          </div>
+        {activeView === 'module-1' && (
+          <div className="view-wrapper animate-fade-in">
+            <div className="view-breadcrumb">
+              <button
+                type="button"
+                className="breadcrumb-back-btn"
+                onClick={() => handleSelectView('home')}
+              >
+                ← Kembali ke Beranda
+              </button>
+              <span className="breadcrumb-separator">/</span>
+              <span className="breadcrumb-current">Bab 1: Mengenal Laju Reaksi &amp; Konsep Mol</span>
+            </div>
 
-          {/* Kartu Modul 1 dengan Tombol Mulai Belajar */}
-          <div className="module-highlight-wrapper">
-            <ModuleCard
+            <ModuleOneDetail
               chapter={moduleOne}
-              isSelected={isStudyingModuleOne}
-              onStartLearning={handleStartLearning}
+              onClose={() => handleSelectView('home')}
+              onNavigateToQuiz={() => handleSelectView('quiz')}
             />
           </div>
-
-          {/* Lembar Belajar Lengkap Modul 1 (Aktif) */}
-          {isStudyingModuleOne && (
-            <div className="module-detail-container">
-              <ModuleOneDetail
-                chapter={moduleOne}
-                onClose={() => setIsStudyingModuleOne(false)}
-              />
-            </div>
-          )}
-        </section>
+        )}
 
         {/* ============================================================ */}
-        {/* 3. RUANG RUMUS & PENJELASAN KHUSUS KONSEP MOL                */}
+        {/* TAMPILAN 3: LEMBAR BELAJAR BAB 2 (TEORI TUMBUKAN & SIMULASI) */}
         {/* ============================================================ */}
-        <section className="standalone-formula-section" id="ruang-rumus">
-          <div className="section-header">
-            <div className="section-eyebrow">Panduan Teori &amp; Penurunan Rumus</div>
-            <h2 className="section-title">Ruang Rumus Laboratorium: Kaitan Erat Konsep Mol</h2>
-            <p className="section-desc">
-              Laju reaksi bukan sekadar kecepatan biasa, melainkan perubahan jumlah mol zat yang larut dalam volume tertentu tiap satuan waktu.
-            </p>
-          </div>
+        {activeView === 'module-2' && (
+          <div className="view-wrapper animate-fade-in">
+            <div className="view-breadcrumb">
+              <button
+                type="button"
+                className="breadcrumb-back-btn"
+                onClick={() => handleSelectView('home')}
+              >
+                ← Kembali ke Beranda
+              </button>
+              <span className="breadcrumb-separator">/</span>
+              <span className="breadcrumb-current">Bab 2: Teori Tumbukan &amp; Simulator Partikel</span>
+            </div>
 
-          <div className="mol-concept-infobox">
-            <div className="mol-info-header">
-              <span className="mol-icon">💡</span>
-              <h4>Mengapa Menggunakan Molaritas (mol/Liter) dan Bukan Satuan Gram?</h4>
-            </div>
-            <p className="mol-info-body">
-              Dalam reaksi kimia, partikel-partikel bereaksi berdasarkan perbandingan <strong>jumlah mol (jumlah partikel)</strong>, bukan perbandingan massa dalam gram. Molaritas (<span className="formula-symbol">[M]</span>) mengukur kerapatan partikel terlarut:
-            </p>
-            <div className="mol-formula-callout">
-              <span className="callout-symbol">[M]</span> ={' '}
-              <span className="callout-fraction">
-                <span>Jumlah Mol Zat (n, mol)</span>
-                <span>Volume Larutan (V, Liter)</span>
-              </span>
-              {' '}➔{' '}
-              <span className="callout-unit">Satuan: mol·L⁻¹</span>
-            </div>
-            <p className="mol-info-body">
-              Sehingga jika reaksi terjadi selama selang waktu <strong>Δt detik</strong>, laju reaksinya (<span className="formula-symbol">r</span>) memiliki satuan pasti:
-            </p>
-            <div className="rate-unit-badge-row">
-              <span className="unit-pill primary">r = |Δ[M]| / Δt</span>
-              <span className="unit-pill accent">Satuan: M/detik atau mol·L⁻¹·s⁻¹</span>
-            </div>
+            <ModuleTwoDetail
+              chapter={moduleTwo}
+              onClose={() => handleSelectView('home')}
+              onNavigateToQuiz={() => handleSelectView('quiz')}
+            />
           </div>
-        </section>
+        )}
 
         {/* ============================================================ */}
-        {/* 4. RENCANA BAB LAIN (BAB 2–5): DIBERI KETERANGAN BELUM TERSEDIA */}
+        {/* TAMPILAN 4: LEMBAR BELAJAR BAB 3 (FAKTOR LAJU & LAB VIRTUAL) */}
         {/* ============================================================ */}
-        <section className="upcoming-chapters-section" id="peta-kurikulum">
-          <div className="section-header">
-            <div className="section-eyebrow">Rencana Kurikulum Berkelanjutan</div>
-            <h2 className="section-title">Peta Pembelajaran Lengkap (Bab 1–5)</h2>
-            <p className="section-desc">
-              Modul di bawah ini merupakan kelanjutan dari Bab 1. Saat ini kartu rencana lain diberi tanda <strong>Belum Tersedia</strong> karena disiapkan untuk rilis bertahap sesuai spesifikasi PRD.
-            </p>
-          </div>
+        {activeView === 'module-3' && (
+          <div className="view-wrapper animate-fade-in">
+            <div className="view-breadcrumb">
+              <button
+                type="button"
+                className="breadcrumb-back-btn"
+                onClick={() => handleSelectView('home')}
+              >
+                ← Kembali ke Beranda
+              </button>
+              <span className="breadcrumb-separator">/</span>
+              <span className="breadcrumb-current">Bab 3: Faktor-Faktor Laju Reaksi</span>
+            </div>
 
-          <div className="upcoming-grid">
-            {COURSE_CHAPTERS.slice(1).map((chapter) => (
-              <ModuleCard
-                key={chapter.id}
-                chapter={chapter}
-                isSelected={false}
-                onStartLearning={() => {}}
-              />
-            ))}
+            <ModuleThreeDetail
+              chapter={moduleThree}
+              onClose={() => handleSelectView('home')}
+              onNavigateToQuiz={() => handleSelectView('quiz')}
+            />
           </div>
+        )}
 
-          {/* Banner Catatan Roadmap PRD */}
-          <div className="roadmap-notice-box">
-            <div className="notice-icon">📌</div>
-            <div className="notice-content">
-              <h5>Catatan Alur Pengembangan Berkelanjutan:</h5>
-              <p>
-                • <strong>Bab 1 (Aktif Saat Ini):</strong> Fondasi Laju Reaksi, Hubungan Molaritas &amp; Konsep Mol, Lembar Kerja Mandiri.<br />
-                • <strong>Bab 2 &amp; Bab 3:</strong> Teori Tumbukan, Simulator Partikel, Laboratorium Virtual Pengaruh Faktor Laju &amp; Kuis Formatif (Local First).<br />
-                • <strong>Bab 4 &amp; Bab 5:</strong> Analisis Data Eksperimen, Diagram Energi, Evaluasi Akhir Diagnostik, serta Panel Guru &amp; Database Hasil.
+        {/* ============================================================ */}
+        {/* TAMPILAN 5: LEMBAR BELAJAR BAB 4 (ANALISIS DATA & DIAGRAM)   */}
+        {/* ============================================================ */}
+        {activeView === 'module-4' && (
+          <div className="view-wrapper animate-fade-in">
+            <div className="view-breadcrumb">
+              <button
+                type="button"
+                className="breadcrumb-back-btn"
+                onClick={() => handleSelectView('home')}
+              >
+                ← Kembali ke Beranda
+              </button>
+              <span className="breadcrumb-separator">/</span>
+              <span className="breadcrumb-current">Bab 4: Analisis Data &amp; Profil Diagram Energi</span>
+            </div>
+
+            <ModuleFourDetail
+              chapter={moduleFour}
+              onClose={() => handleSelectView('home')}
+              onNavigateToQuiz={() => handleSelectView('quiz')}
+              onNavigateToModuleFive={() => handleSelectView('module-5')}
+            />
+          </div>
+        )}
+
+        {/* ============================================================ */}
+        {/* TAMPILAN 6: LEMBAR EVALUASI AKHIR & DIAGNOSTIK BAB 5        */}
+        {/* ============================================================ */}
+        {activeView === 'module-5' && (
+          <div className="view-wrapper animate-fade-in">
+            <div className="view-breadcrumb">
+              <button
+                type="button"
+                className="breadcrumb-back-btn"
+                onClick={() => handleSelectView('home')}
+              >
+                ← Kembali ke Beranda
+              </button>
+              <span className="breadcrumb-separator">/</span>
+              <span className="breadcrumb-current">Bab 5: Evaluasi Akhir &amp; Diagnostik</span>
+            </div>
+
+            <ModuleFiveDetail
+              chapter={moduleFive}
+              onStartQuiz={() => handleSelectView('quiz')}
+              onClose={() => handleSelectView('home')}
+            />
+          </div>
+        )}
+
+        {/* ============================================================ */}
+        {/* TAMPILAN 7: BERANDA UTAMA (HOME VIEW)                        */}
+        {/* ============================================================ */}
+        {activeView === 'home' && (
+          <div className="home-view animate-fade-in">
+            {/* Hero Section */}
+            <section className="hero-banner" id="hero-section">
+              {/* Notifikasi Pengguna / Banner Status Akun */}
+              {currentUser ? (
+                <div className="user-welcome-banner animate-fade-in">
+                  <span className="welcome-avatar-badge">{currentUser.avatarInitial || '👤'}</span>
+                  <div className="welcome-text">
+                    <strong>Selamat Datang, {currentUser.name}!</strong> ({currentUser.className}) — Masuk via{' '}
+                    {currentUser.provider === 'google' ? 'Akun Google Langsung' : 'Email Siswa'}. Catatan progres kuis dan aktivitas praktikum Anda tersimpan secara lokal.
+                  </div>
+                </div>
+              ) : (
+                <div className="auth-reminder-banner animate-fade-in">
+                  <div className="reminder-left">
+                    <span className="reminder-icon">🔐</span>
+                    <div className="reminder-text">
+                      <strong>Akun Siswa / Guru:</strong> Masuk atau daftarkan akun Anda (bisa langsung pakai Akun Google) untuk menyimpan rekam jejak kuis &amp; praktikum.
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-reminder-auth"
+                    onClick={handleOpenAuth}
+                  >
+                    Masuk / Daftar Akun ➔
+                  </button>
+                </div>
+              )}
+
+              <div className="worksheet-badge-row">
+                <span className="worksheet-pill">
+                  🔬 Laboratorium Virtual Kimia SMA
+                </span>
+                <span className="target-pill">
+                  🎯 Sasaran: Siswa Kelas XI (Fase F) &amp; Guru Kimia SMA
+                </span>
+                <span className="free-access-pill">
+                  ✨ 100% Bebas Akses • Seluruh 5 Bab Lengkap
+                </span>
+              </div>
+
+              <h1 className="hero-title">
+                ReactionLab: Laboratorium &amp; Lembar Belajar Laju Reaksi
+              </h1>
+
+              <p className="hero-description">
+                Platform pembelajaran interaktif kinetika kimia SMA yang menghubungkan fenomena makroskopis,
+                pergerakan partikel submikroskopis, simulasi faktor reaksi, analisis orde kuantitatif, hingga diagram energi aktivasi.
               </p>
+
+              {/* Persona Pengguna */}
+              <div className="user-persona-grid">
+                <div className="persona-card">
+                  <div className="persona-header">
+                    <span className="persona-icon">🎓</span>
+                    <span className="persona-role">Untuk Siswa SMA Kelas XI</span>
+                  </div>
+                  <p className="persona-text">
+                    Belajar mandiri dengan runtutan materi terarah: memahami konsep mol &amp; molaritas, melihat tumbukan partikel, menguji faktor laju di lab virtual, hingga menguji penalaran di kuis 10 soal.
+                  </p>
+                </div>
+
+                <div className="persona-card">
+                  <div className="persona-header">
+                    <span className="persona-icon">👩‍🏫</span>
+                    <span className="persona-role">Untuk Guru Kimia SMA</span>
+                  </div>
+                  <p className="persona-text">
+                    Media peraga praktikum virtual untuk menjelaskan pengaruh 4 variabel reaksi, penentuan orde reaksi, diagram energi, serta memantau skor kuis dan ketuntasan belajar siswa.
+                  </p>
+                  <button
+                    type="button"
+                    className="btn-persona-teacher"
+                    onClick={() => handleSelectView('teacher-panel')}
+                  >
+                    Buka Panel Guru (Pemantauan Kelas) ➔
+                  </button>
+                </div>
+              </div>
+
+              {/* Formula Model Reaksi */}
+              <div className="lab-sample-strip">
+                <span className="strip-title">🧪 Model Reaksi Praktikum:</span>
+                <div className="strip-equations">
+                  <span className="equation-tag">
+                    <ChemicalFormula formula="CaCO3(s) + 2HCl(aq) -> CaCl2(aq) + H2O(l) + CO2(g)" />
+                  </span>
+                  <span className="equation-separator">•</span>
+                  <span className="equation-tag">
+                    <ChemicalFormula formula="2NO(g) + Cl2(g) -> 2NOCl(g)" />
+                  </span>
+                </div>
+              </div>
+
+              {/* Tombol Aksi Hero */}
+              <div className="hero-actions">
+                <button
+                  type="button"
+                  className="btn btn-primary btn-lg"
+                  onClick={() => handleSelectView('module-1')}
+                >
+                  Mulai Bab 1 (Laju &amp; Mol) ➔
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-lg"
+                  onClick={() => handleSelectView('module-3')}
+                >
+                  🧪 Lab Virtual Bab 3
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-lg"
+                  onClick={() => handleSelectView('module-4')}
+                >
+                  📊 Analisis Data Bab 4
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-quiz-cta btn-lg"
+                  onClick={() => handleSelectView('quiz')}
+                >
+                  📝 Ikuti Kuis 10 Soal
+                </button>
+              </div>
+            </section>
+
+            {/* Bagian Semua Modul Pembelajaran Aktif (Bab 1 s.d. Bab 5) */}
+            <section className="featured-modules-row" id="modul-aktif">
+              <div className="section-header">
+                <div className="section-eyebrow">Alur Kurikulum Lengkap &amp; Mandiri</div>
+                <h2 className="section-title">Semua Modul Pembelajaran (Bab 1 s.d. Bab 5)</h2>
+                <p className="section-desc">
+                  Seluruh rangkaian materi laju reaksi telah siap digunakan: dari konsep mol, simulator teori tumbukan, laboratorium variabel, penentuan orde reaksi, hingga evaluasi akhir diagnostik.
+                </p>
+              </div>
+
+              <div className="active-modules-grid">
+                {COURSE_CHAPTERS.map((chapter) => (
+                  <ModuleCard
+                    key={chapter.id}
+                    chapter={chapter}
+                    isSelected={false}
+                    onStartLearning={handleStartLearning}
+                  />
+                ))}
+              </div>
+            </section>
+
+            {/* Ruang Rumus & Konsep Mol */}
+            <section className="standalone-formula-section" id="ruang-rumus">
+              <div className="section-header">
+                <div className="section-eyebrow">Panduan Teori &amp; Penurunan Rumus</div>
+                <h2 className="section-title">Ruang Rumus Laboratorium: Kaitan Erat Konsep Mol</h2>
+                <p className="section-desc">
+                  Laju reaksi mengukur berkurangnya jumlah mol zat reaktan terlarut per liter larutan tiap satuan detik.
+                </p>
+              </div>
+
+              <div className="mol-concept-infobox">
+                <div className="mol-info-header">
+                  <span className="mol-icon">💡</span>
+                  <h4>Mengapa Menggunakan Molaritas (mol/Liter) dan Bukan Satuan Gram?</h4>
+                </div>
+                <p className="mol-info-body">
+                  Dalam reaksi kimia, partikel-partikel bereaksi berdasarkan perbandingan <strong>jumlah mol (jumlah partikel)</strong>, bukan perbandingan massa dalam gram. Molaritas (<span className="formula-symbol">[M]</span>) mengukur kerapatan partikel terlarut:
+                </p>
+                <div className="mol-formula-callout">
+                  <span className="callout-symbol">[M]</span> ={' '}
+                  <span className="callout-fraction">
+                    <span>Jumlah Mol Zat (n, mol)</span>
+                    <span>Volume Larutan (V, Liter)</span>
+                  </span>
+                  {' '}➔{' '}
+                  <span className="callout-unit">Satuan: mol·L⁻¹</span>
+                </div>
+                <p className="mol-info-body">
+                  Sehingga laju reaksi (<span className="formula-symbol">r</span>) memiliki satuan pasti:
+                </p>
+                <div className="rate-unit-badge-row">
+                  <span className="unit-pill primary">r = |Δ[M]| / Δt</span>
+                  <span className="unit-pill accent">Satuan: M/detik atau mol·L⁻¹·s⁻¹</span>
+                  <span className="unit-pill" style={{ backgroundColor: '#f1f5f9', color: '#334155' }}>
+                    Hukum Laju: r = k [A]ˣ [B]ʸ
+                  </span>
+                </div>
+              </div>
+            </section>
+
+            {/* Banner Kurikulum Lengkap */}
+            <div className="roadmap-notice-box">
+              <div className="notice-icon">🎉</div>
+              <div className="notice-content">
+                <h5>ReactionLab 11 — Seluruh Modul Siap Digunakan:</h5>
+                <p>
+                  • <strong>Bab 1:</strong> Fondasi Laju Reaksi, Hubungan Molaritas &amp; Konsep Mol.<br />
+                  • <strong>Bab 2:</strong> Teori Tumbukan &amp; Simulator Partikel Kinetik 2D.<br />
+                  • <strong>Bab 3:</strong> Laboratorium Virtual Pengaruh 4 Variabel Reaksi (Suhu, Konsentrasi, Luas Permukaan, Katalis).<br />
+                  • <strong>Bab 4:</strong> Analisis Data Eksperimen, Penentuan Orde Reaksi, &amp; Diagram Profil Energi.<br />
+                  • <strong>Bab 5:</strong> Evaluasi Akhir Komprehensif dengan Kuis Interaktif 10 Soal &amp; Rapor Diagnostik.
+                </p>
+              </div>
             </div>
           </div>
-        </section>
+        )}
       </main>
 
-      {/* ============================================================ */}
-      {/* 5. FOOTER: Informasi Hakikat & Standar Proyek                */}
-      {/* ============================================================ */}
+      {/* Footer Aplikasi */}
       <footer className="app-footer">
         <div className="footer-inner">
           <div className="footer-left">
             <span className="footer-logo">⚗️ ReactionLab 11</span>
             <p className="footer-tagline">
-              Platform Edukasi Terbuka Kinetika Kimia SMA Kelas XI. Membantu siswa memahami konsep mol, molaritas, dan laju reaksi melalui lembar belajar terarah.
+              Platform Edukasi Terbuka Kinetika Kimia SMA Kelas XI. Membantu siswa memahami konsep mol, molaritas, teori tumbukan, faktor reaksi, dan orde reaksi melalui lembar belajar terarah.
             </p>
             <div className="footer-principles">
               <span className="principle-pill">✓ 100% Gratis &amp; Terbuka</span>
-              <span className="principle-pill">✓ Tanpa Login / Tanpa Identitas Siswa</span>
               <span className="principle-pill">✓ Standar Ilmiah Kimia SMA</span>
+              <button
+                type="button"
+                className="btn-footer-teacher"
+                onClick={() => handleSelectView('teacher-panel')}
+              >
+                👨‍🏫 Panel Guru (Pemantauan Kelas)
+              </button>
             </div>
           </div>
 

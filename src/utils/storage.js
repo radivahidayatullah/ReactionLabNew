@@ -7,7 +7,10 @@ const STORAGE_KEYS = {
   PROGRESS: 'reactionlab11_progress_v1',
   QUIZ_HISTORY: 'reactionlab11_quiz_history_v1',
   LAB_STATE: 'reactionlab11_lab_state_v1',
-  USER_SETTINGS: 'reactionlab11_user_settings_v1'
+  USER_SETTINGS: 'reactionlab11_user_settings_v1',
+  AUTH_USER: 'reactionlab11_auth_user_v1',
+  USERS_DB: 'reactionlab11_users_db_v1',
+  STUDENTS_ROSTER: 'reactionlab11_students_roster_v1'
 };
 
 export function getStoredData(key, fallbackValue = null) {
